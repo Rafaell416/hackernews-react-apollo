@@ -4,19 +4,50 @@ import Link from './Link'
 
 class LinkList extends Component {
 
+  _subscribeToNewLinks = () => {
+    this.props.allLinksQuery.subscribeToMore({
+      document: gql`
+        subscription {
+          Link(filter: {
+            mutation_in: [CREATED]
+          }) {
+            node {
+              id
+              url
+              description
+              createdAt
+            }
+          }
+        }
+      `,
+      updateQuery: (previous, { subscriptionData }) => {
+        const newAllLinks = [
+          subscriptionData.data.Link.node,
+          ...previous.allLinks
+        ]
+        const result = {
+          ...previous,
+          allLinks: newAllLinks
+        }
+        return result
+      }
+    })
+  }
+
+  componentDidMount() {
+    this._subscribeToNewLinks()
+  }
+
   render() {
 
-  // 1
   if (this.props.allLinksQuery && this.props.allLinksQuery.loading) {
     return <div>Loading</div>
   }
 
-  // 2
   if (this.props.allLinksQuery && this.props.allLinksQuery.error) {
     return <div>Error</div>
   }
 
-  // 3
   const linksToRender = this.props.allLinksQuery.allLinks
 
   return (
