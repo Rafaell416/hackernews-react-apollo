@@ -8,7 +8,7 @@ import { ApolloProvider, createNetworkInterface, ApolloClient } from 'react-apol
 
 // 2
 const networkInterface = createNetworkInterface({
-  uri: ' https://api.graph.cool/simple/v1/cj9dlm2rm1kci01763kbzg2v5'
+  uri: 'https://api.graph.cool/simple/v1/cj9dlm2rm1kci01763kbzg2v5'
 })
 
 // 3
